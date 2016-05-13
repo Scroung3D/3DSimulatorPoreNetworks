@@ -1,0 +1,1 @@
+/^\/(L\d+_xmb|L\d+xmb)\d+_xms\d+_om\d+\.\d+_s\d+_cs\d+_nc\d+_f\d+(_nt\d+(_c_|_s_)\d+bat|_c_\d+_bat_\d+)$/

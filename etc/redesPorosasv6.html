@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<head>
+  <script> mainurl = ''</script>
+  <script type="text/javascript" src="/datguimin.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script>
+    var socket = io();
+  </script>
+
+  <style type="text/css">
+    html, body {
+      margin: 0px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <script id="vertex-shader" type="shader-x/vertex-x">
+    attribute vec4 vPosition;
+    attribute vec4 vNormal;
+    attribute vec3 vOffset;
+    attribute vec4 vAmbDifProduct;
+    attribute float vRotar;
+    attribute float vRadio;
+
+    varying vec3 N, L, E;
+    varying vec4 fAmbientProduct;
+    varying vec4 fDiffuseProduct;
+
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform vec4 lightPosition;
+    uniform mat3 normalMatrix;
+    uniform float uFlag;
+
+    void main()
+    {
+        mat4 rot;
+        if (vRotar == 0.0){
+            rot = mat4(1.0, 0.0, 0.0, 0.0,
+    					    0.0, 1.0, 0.0, 0.0,
+    					    0.0, 0.0, 1.0, 0.0,
+    					    0.0, 0.0, 0.0, 1.0);
+        }
+        if (vRotar == 1.0){
+            float c = cos(-(acos(-1.0))/2.0);
+    		float s = sin(-(acos(-1.0))/2.0);
+
+    		rot = mat4(1.0, 0.0, 0.0, 0.0,
+    					   0.0,  c ,  s , 0.0,
+    					   0.0, -s ,  c , 0.0,
+    					   0.0, 0.0, 0.0, 1.0);
+        }
+        if (vRotar == 2.0){
+            float c = cos(-(acos(-1.0))/2.0);
+    		float s = sin(-(acos(-1.0))/2.0);
+
+    		rot = mat4(  c, 0.0,  -s, 0.0,
+    					   0.0, 1.0, 0.0, 0.0,
+    					     s, 0.0,   c, 0.0,
+    					   0.0, 0.0, 0.0, 1.0);
+        }
+        fAmbientProduct = vec4(vAmbDifProduct.r*0.2,vAmbDifProduct.g*0.2,vAmbDifProduct.b*0.2,vAmbDifProduct.a);
+        fDiffuseProduct = vec4(vAmbDifProduct.r,vAmbDifProduct.g,vAmbDifProduct.b,vAmbDifProduct.a);
+
+        mat4 sca;
+        if (uFlag == 0.0){
+            sca = mat4(vRadio,    0.0,    0.0, 0.0,
+                       0.0, vRadio,    0.0, 0.0,
+                       0.0,    0.0, vRadio, 0.0,
+                       0.0,    0.0,    0.0, 1.0);
+        }
+        else{
+            sca = mat4(vRadio,    0.0,    0.0, 0.0,
+                       0.0, vRadio,    0.0, 0.0,
+                       0.0,    0.0,    1.0, 0.0,
+                       0.0,    0.0,    0.0, 1.0);
+        }
+
+
+        vec4 auxPos = sca * vPosition;
+        vec4 auxPos2 = rot * auxPos;
+        vec4 newPos = auxPos2 + vec4(vOffset, 0.0);
+        vec3 pos = (modelViewMatrix * newPos).xyz;
+
+        if(lightPosition.w == 0.0)  L = normalize(lightPosition.xyz);
+        else  L = normalize(lightPosition.xyz - pos);
+
+        E =  -normalize(pos);
+        N = normalize( normalMatrix * vNormal.xyz );
+
+        gl_Position = projectionMatrix * modelViewMatrix * newPos;
+    }
+  </script>
+  <script id="fragment-shader" type="shader-x/fragment-x">
+    precision mediump float;
+
+    varying vec4 fAmbientProduct;
+    varying vec4 fDiffuseProduct;
+    uniform vec4 specularProduct;
+    uniform float shininess;
+    varying vec3 N, L, E;
+
+    void main()
+    {
+      vec4 fColor;
+
+      vec3 H = normalize( L + E );
+      vec4 ambient = fAmbientProduct;
+
+      float Kd = max( dot(L, N), 0.0 );
+      vec4  diffuse = Kd*fDiffuseProduct;
+
+      float Ks = pow( max(dot(N, H), 0.0), shininess );
+      vec4  specular = Ks * specularProduct;
+
+      if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
+
+      fColor = ambient + diffuse +specular;
+      fColor.a = 1.0;
+
+      gl_FragColor = fColor;
+    }
+  </script>
+
+
+
+  <script type="text/javascript" src="webgl-utils.js"></script>
+  <script type="text/javascript" src="initShaders.js"></script>
+  <script type="text/javascript" src="flatten.js"></script>
+  <script type="text/javascript" src="MV.js"></script>
+  <script type="text/javascript" src="figurasv2.js"></script>
+  <script type="text/javascript" src="redesPorosasv6.js"></script>
+</head>
+<body style="background:black">
+  <canvas id="id-canvas">
+    Your browser doesn't support html5 canvas element.
+  </canvas>
+</body>
+</html>
