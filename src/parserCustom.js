@@ -35,12 +35,9 @@ module.exports = exports = function( path, red, iniX, finX, iniY, finY, iniZ, fi
     fs.readFile( path2.resolve( nameFile ), function (err, data ) {
         var nameFileColor =  path + 'bin/' + red  + '_CC'+ nProc + '.bin';
         var nameCustomColor = path + 'json/' + red  + '_CC' + nProc +'_custom.json';
-        console.log("KKKK + " + nProc);
-        console.log("QQQQQ +" + nameFileColor);
         fs.readFile( path2.resolve( nameFileColor ), function (err, dataColor ) {
             nameFile = ( '/' + red + '.bin').substring(1);
             var s = nameFile.split( '_' );
-            console.log(s);
             if (s[0].search(/xmb/) != -1){
                 crgFlag = false;
                 var L = Number(s[0].substring(1,s[0].indexOf("xmb")));
@@ -103,7 +100,6 @@ module.exports = exports = function( path, red, iniX, finX, iniY, finY, iniZ, fi
                                    dataColor.readInt32LE( i + 8 ),
                                    dataColor.readInt32LE( i + 12 )]);
             }
-            console.log("&&&&&&&&&&&& " + arrayColores[0], arrayColores[1], arrayColores[2]);
 
             rmax = 0;
             for (x in array) {
@@ -130,7 +126,6 @@ module.exports = exports = function( path, red, iniX, finX, iniY, finY, iniZ, fi
             minZ = cota + 1;
             x = -cota;
             x2 = 1;
-            console.log(bSmall, bMedium, bBig);
             var cuenta1 = 0;
             var cuenta2 = 0;
             var cuenta3 = 0;
@@ -323,11 +318,6 @@ module.exports = exports = function( path, red, iniX, finX, iniY, finY, iniZ, fi
             atY = (maxY+minY)/2;
             atZ = (maxZ+minZ)/2;
 
-            console.log(cuenta1);
-            console.log(cuenta2);
-            console.log(cuenta3);
-            console.log( finX + 'X' + finY + 'X' + finZ + '=' + sitios.length/(9) );
-            console.log(atX,atY,atZ);
             objson["sitios"] = sitios;
             objson["enlaces"] = enlaces;
 
@@ -339,7 +329,6 @@ module.exports = exports = function( path, red, iniX, finX, iniY, finY, iniZ, fi
 
             var string = JSON.stringify( objson );
 
-            console.log("=====" + nameCustom);
             fs.writeFile( path2.resolve(nameCustom), string, function(err) {
                 if(err) {
                   console.log( err );
@@ -347,7 +336,6 @@ module.exports = exports = function( path, red, iniX, finX, iniY, finY, iniZ, fi
                   console.log( "JSON saved to " + nameCustom );
                   objsonColor["sitiosColor"] = sitiosColor;
                   objsonColor["enlacesColor"] = enlacesColor;
-                  console.log("HHHHHHHHHHHHHHHHHH");
                   console.log(sitiosColor[0],sitiosColor[1],sitiosColor[2],sitiosColor[3]);
                   var stringColor = JSON.stringify( objsonColor );
                 }

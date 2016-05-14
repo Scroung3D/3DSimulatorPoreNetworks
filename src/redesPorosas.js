@@ -203,7 +203,6 @@ var init = function(){
                           bBig: banderaBig,
                           tipo: 2,
                           proc: procActual} );
-                          console.log(banderaSmall, banderaMedium, banderaBig);
                           controlador[21].name("Ocultando Red...");
                   }
                   else alert("No tiene sentido ocultar todos los poros.");
@@ -489,8 +488,6 @@ var init = function(){
             help4 = multiplicaMatVec(rotate2( gradosY, aux ), help3);
             eye = vec3(help4[0]+at[0],help4[1]+at[1],help4[2]+at[2]);
             up = multiplicaMatVec(rotate2( gradosY, aux ), up);
-            console.log( eye );
-            console.log("distancia:" + Math.sqrt(Math.pow(eye[0]-at[0],2)+Math.pow(eye[1]-at[1],2)+Math.pow(eye[2]-at[2],2)));
             cilindro.look = lookAt(eye,at,up);
             esfera.look = lookAt(eye,at,up);
 
@@ -642,7 +639,6 @@ socket.on('cargaJSONDefault', function(url){
       data = JSON.parse(this.responseText);
       at = vec3(data.atX,data.atY,data.atZ);
       nProc = url.proc;
-      console.log(nProc);
       var jsonXhr2 = new XMLHttpRequest();
       jsonXhr2.open('GET', ('../' + url.nameFile + '_CC0_default.json'), false);
       jsonXhr2.onload = function() {
@@ -667,13 +663,11 @@ socket.on('cargaJSONCustom', function(res){
         jsonXhr.onload = function() {
             dataAux = null;
             dataAux = JSON.parse(this.responseText);
-            console.log(dataAux);
             var jsonXhr2 = new XMLHttpRequest();
                 jsonXhr2.open('GET',  ('../' + res.url + '_CC' + res.proc + '_custom.json') , false);
                 jsonXhr2.onload = function() {
                     dataAux2 = null;
                     dataAux2 = JSON.parse(this.responseText);
-                    console.log(dataAux2);
 
                     //1.-CARGA
                     //=========================================================================================================================

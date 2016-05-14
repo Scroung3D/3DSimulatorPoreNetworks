@@ -27,8 +27,6 @@ app.get( /^\/[a-z0-9_-]{3,15}\/(L\d+_xmb|L\d+xmb)\d+_xms\d+_om\d+\.\d+_s\d+_cs\d
   nombre = req.url.substring(1,req.url.indexOf('/',1));
   red = req.url.substring(req.url.indexOf('/',1) + 1);
   var dirAux = "/home/" + nombre + "/public_html/apprwgl/";
-  console.log("DIRaux: " + dirAux);
-  console.log("RED: " + red);
   var sAux = red.split("_");
   if(sAux[0].indexOf("xmb") === -1){
       dir = dirAux + "redesCR/";
@@ -36,11 +34,8 @@ app.get( /^\/[a-z0-9_-]{3,15}\/(L\d+_xmb|L\d+xmb)\d+_xms\d+_om\d+\.\d+_s\d+_cs\d
   else{
       dir = dirAux + "redesSR/";
   }
-  console.log("DIR: " + dir);
   var nameFile1 = dir + 'bin/' + red + '.bin';
   var nameFile2 = dir + 'json/' + red + '_default.json';
-  console.log("NAMEFILEbin: " + nameFile1);
-  console.log("NAMEFILEjson: " + nameFile2);
   if( fileExists( nameFile1 ) && fileExists( nameFile2 ) ) {
       res.sendfile('redesPorosas.html');
       app.get( '/' + red + '_default.json', function(req, res){

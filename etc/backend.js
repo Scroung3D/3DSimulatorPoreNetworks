@@ -118,8 +118,6 @@ var parsea = function( path, iniX, finX, iniY, finY, iniZ, finZ ){
         }
 
         objson = { L:L, xmb: xmb, xms: xms, sitios: sitios, enlaces: enlaces };
-
-        console.log(objson.sitios);
     });
 };
 

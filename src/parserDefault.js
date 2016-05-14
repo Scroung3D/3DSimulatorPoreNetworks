@@ -214,14 +214,7 @@ var parsea = function( iniX, finX, iniY, finY, iniZ, finZ, io ){
             var string = JSON.stringify( objson );
             var stringColor = JSON.stringify( objsonColor );
 
-            console.log(cuenta1);
-            console.log(cuenta2);
-            console.log(cuenta3);
-            console.log("contador = " + cuenta);
             var result = L*L*L;
-            console.log('Esperado' + L + 'X' + L + 'X' + L + '=' + result);
-            console.log('Obtenido' + L + 'X' + L + 'X' + L + '=' + sitios.length/9);
-
 
             fs.writeFile( nameDefault, string, function(err) {
                 if(err) {
